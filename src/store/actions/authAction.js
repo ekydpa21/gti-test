@@ -32,16 +32,17 @@ export const signIn = (input) => {
     try {
       dispatch(fetchLoading())
 
-      await axios
-        .post(`${baseUrl}/login`, input)
-        .then(({ data }) => {
-          console.log(data)
-          if (data) {
-            localStorage.setItem("access_token", data.data)
-          }
-        })
-        .catch((err) => console.log(err.response.data.message))
+      const response = await axios.post(`${baseUrl}/login`, input)
+      const token = response.data.data
+
+      localStorage.setItem("token", token)
+
+      dispatch({
+        type: "TOKEN",
+        payload: token,
+      })
     } catch (err) {
+      console.log(err.response)
       return {
         type: "ERROR",
       }
@@ -54,34 +55,17 @@ export const signUp = (input) => {
     try {
       dispatch(fetchLoading())
 
-      await axios
-        .post(`${baseUrl}/register`, input)
-        .then(({ data }) => {
-          if ({ data }) {
-            const { token } = data.data
-            localStorage.setItem("access_token", token)
-            // dispatch(isAuth(true))
-            console.log(token)
-          }
-        })
-        .catch((err) => console.log(err.response))
+      const response = await axios.post(`${baseUrl}/register`, input)
+      const token = response.data.data.token
 
-      // fetch(`${baseUrl}/register`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(input),
-      // })
-      //   .then(({ data }) => {
-      //     if (data) {
-      //       console.log(data);
-      //     } else {
-      //       console.log("fail");
-      //     }
-      //   })
-      //   .catch((err) => console.log(err, "----"));
+      localStorage.setItem("token", token)
+
+      dispatch({
+        type: "TOKEN",
+        payload: token,
+      })
     } catch (err) {
+      console.log(err.response)
       return {
         type: "ERROR",
       }

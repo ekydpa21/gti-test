@@ -7,21 +7,20 @@ import Swal from "sweetalert2"
 
 function Profile() {
   const dispatch = useDispatch()
+  const token = localStorage.getItem("token")
   const { profile, loading } = useSelector((state) => state.profile)
-
   const [showEditForm, setShowEditForm] = useState(false)
-  console.log(profile)
+
   useEffect(() => {
-    dispatch(fetchProfile())
+    dispatch(fetchProfile(token))
     // eslint-disable-next-line
-  }, [])
+  }, [token])
 
   const [editInput, setEditInput] = useState({
     username: profile ? profile.username : "",
     password: profile ? profile.password : "",
     role: profile ? profile.role : "",
   })
-  console.log(editInput)
 
   const handleChange = (e) => {
     let { name, value } = e.target
@@ -36,7 +35,15 @@ function Profile() {
 
   const handleEdit = (e) => {
     e.preventDefault()
-    dispatch(editProfile(editInput))
+    dispatch(editProfile(token, editInput))
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Profile Is Updated Successfully",
+      showConfirmButton: false,
+      timer: 1500,
+    })
+    setShowEditForm(false)
   }
 
   const handleDelete = (e) => {
@@ -48,7 +55,7 @@ function Profile() {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        dispatch(deleteProfile(profile.id))
+        dispatch(deleteProfile(token, profile.id))
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -80,7 +87,7 @@ function Profile() {
             <label htmlFor="password" className="form-label label">
               Password
             </label>
-            <input type="text" name="password" value={editInput.password} onChange={handleChange} className="form-control" id="password" autoComplete="none" />
+            <input type="password" name="password" value={editInput.password} onChange={handleChange} className="form-control" id="password" autoComplete="none" />
           </div>
           <div>
             <label htmlFor="role" className="form-label label">

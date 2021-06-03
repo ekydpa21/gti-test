@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { useHistory } from "react-router"
-import { Link, withRouter } from "react-router-dom"
+import { withRouter } from "react-router-dom"
 import { signIn, signUp } from "../store/actions/authAction"
 import Modal from "react-modal"
 
@@ -93,9 +93,9 @@ function Auth() {
           <button type="button" className="btn btn-secondary" onClick={() => setShowSignInModal(false)}>
             Cancel
           </button>
-          <Link to={{ pathname: "/profile" }} type="button" className="btn btn-primary ms-2" onClick={handleSignIn}>
+          <button type="button" className="btn btn-primary ms-2" onClick={handleSignIn}>
             Sign In
-          </Link>
+          </button>
         </div>
       </Modal>
 
@@ -130,9 +130,9 @@ function Auth() {
           <button type="button" className="btn btn-secondary" onClick={() => setShowSignUpModal(false)}>
             Cancel
           </button>
-          <Link to={{ pathname: "/profile" }} type="button" className="btn btn-primary ms-2" onClick={handleSignUp}>
+          <button type="button" className="btn btn-primary ms-2" onClick={handleSignUp}>
             Sign Up
-          </Link>
+          </button>
         </div>
       </Modal>
 
