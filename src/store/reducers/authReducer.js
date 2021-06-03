@@ -2,7 +2,7 @@ const initialState = {
   loading: false,
   error: false,
   isAuth: false,
-};
+}
 
 function profileReducer(state = initialState, action) {
   switch (action.type) {
@@ -10,21 +10,21 @@ function profileReducer(state = initialState, action) {
       return {
         ...state,
         loading: true,
-      };
+      }
     case "ISAUTH_FETCHING":
       return {
         ...state,
         isAuth: action.payload,
         loading: false,
-      };
+      }
     case "ERROR":
       return {
         ...state,
         error: true,
-      };
+      }
     default:
-      return state;
+      return state
   }
 }
 
-export default profileReducer;
+export default profileReducer
