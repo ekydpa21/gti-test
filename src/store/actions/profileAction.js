@@ -20,8 +20,6 @@ export const fetchProfile = (token) => {
         headers: { token },
       })
 
-      console.log(response)
-
       dispatch({
         type: "PROFILE_FETCHING",
         payload: response.data.data,
