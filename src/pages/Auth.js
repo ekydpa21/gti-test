@@ -1,11 +1,13 @@
 import React, { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useHistory } from "react-router"
 import { withRouter } from "react-router-dom"
-import { signIn, signUp } from "../store/actions/authAction"
+import { errorStatus, signIn, signUp } from "../store/actions/authAction"
 import Modal from "react-modal"
+import Swal from "sweetalert2"
 
 function Auth() {
+  const { message, error } = useSelector((state) => state.auth)
   const history = useHistory()
   const dispatch = useDispatch()
   const [showSignInModal, setShowSignInModal] = useState(false)
@@ -19,6 +21,7 @@ function Auth() {
     password: "",
     role: "",
   })
+
   const handleChangeSignIn = (e) => {
     let { name, value } = e.target
     const newInput = { ...inputSignIn, [name]: value }
@@ -39,14 +42,16 @@ function Auth() {
   const handleSignIn = (e) => {
     e.preventDefault()
     dispatch(signIn(inputSignIn))
-    setTimeout(() => {
-      history.push("/profile")
-    }, 1000)
     setInputSignIn({
       username: "",
       password: "",
     })
     setShowSignInModal(false)
+    if (error === false) {
+      setTimeout(() => {
+        history.push("/profile")
+      }, 1000)
+    }
   }
 
   const showSignUpForm = async (e) => {
@@ -69,6 +74,20 @@ function Auth() {
       }, 1000)
     }
   }
+
+  const showErrMsg = () => {
+    Swal.fire({
+      title: message,
+      confirmButtonText: `Ok`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        dispatch(errorStatus(false))
+      }
+    })
+  }
+
+  if (error) showErrMsg()
 
   return (
     <div className="auth container">

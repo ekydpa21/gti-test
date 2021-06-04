@@ -1,7 +1,7 @@
 const initialState = {
   loading: false,
   error: false,
-  token: undefined,
+  message: "",
 }
 
 function authReducer(state = initialState, action) {
@@ -20,7 +20,12 @@ function authReducer(state = initialState, action) {
     case "ERROR":
       return {
         ...state,
-        error: true,
+        error: action.payload,
+      }
+    case "ERROR_MESSAGE":
+      return {
+        ...state,
+        message: action.payload,
       }
     default:
       return state

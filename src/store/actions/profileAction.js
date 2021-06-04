@@ -41,6 +41,7 @@ export const deleteProfile = (token, id) => {
       await axios.get(`${baseUrl}/delete/${id}`, {
         headers: { token },
       })
+      localStorage.clear()
 
       dispatch(fetchProfile(token))
     } catch (err) {

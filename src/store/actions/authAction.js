@@ -11,6 +11,20 @@ export const fetchLoading = () => {
   }
 }
 
+export const errorStatus = (status) => {
+  return {
+    type: "ERROR",
+    payload: status,
+  }
+}
+
+export const errMsg = (payload) => {
+  return {
+    type: "ERROR_MESSAGE",
+    payload: payload,
+  }
+}
+
 export const signOut = () => {
   return async (dispatch) => {
     try {
@@ -20,9 +34,8 @@ export const signOut = () => {
 
       // dispatch(isAuth(false))
     } catch (err) {
-      return {
-        type: "ERROR",
-      }
+      dispatch(errorStatus(true))
+      dispatch(errMsg(err.response.data.message))
     }
   }
 }
@@ -42,10 +55,8 @@ export const signIn = (input) => {
         payload: token,
       })
     } catch (err) {
-      console.log(err.response)
-      return {
-        type: "ERROR",
-      }
+      dispatch(errorStatus(true))
+      dispatch(errMsg(err.response.data.message))
     }
   }
 }
@@ -65,10 +76,8 @@ export const signUp = (input) => {
         payload: token,
       })
     } catch (err) {
-      console.log(err.response)
-      return {
-        type: "ERROR",
-      }
+      dispatch(errorStatus(true))
+      dispatch(errMsg(err.response.data.message))
     }
   }
 }
